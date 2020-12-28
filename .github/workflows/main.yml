@@ -17,7 +17,7 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
-    - run: npm run build && zip --junk-paths client-app.zip ./build/
+    - run: npm install && npm run build && zip --junk-paths client-app.zip ./build/
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
