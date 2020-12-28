@@ -17,9 +17,9 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
-    - run: zip server/build/server-linux.zip server/server-linux
-    - run: zip server/build/server-macos.zip server/server-macos
-    - run: zip server/build/server-win.zip server/server-win.exe
+    - run: zip server/build/server-linux.zip server/build/server-linux
+    - run: zip server/build/server-macos.zip server/build/server-macos
+    - run: zip server/build/server-win.zip server/build/server-win.exe
     - run: npm install && npm run build && zip -r build/client-app.zip build
     - name: Create Release
       id: create_release
