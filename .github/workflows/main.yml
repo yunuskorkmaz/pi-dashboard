@@ -17,7 +17,6 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
-    - run: cd ./server/build && zip --junk-paths app.zip server-linux 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -28,13 +27,33 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: true
-    - name: Upload Release Asset
-      id: upload-release-asset 
+    - name: Upload Release Asset Linux
+      id: upload-release-asset-linux
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./server/build/app.zip
-        asset_name: app.zip
-        asset_content_type: application/zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./server/build/server-linux
+        asset_name: server-linux
+        asset_content_type: application/x-executable
+    - name: Upload Release Asset MACOS
+      id: upload-release-asset-macos
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./server/build/server-macos
+        asset_name: server-macos
+        asset_content_type: application/x-executable
+    - name: Upload Release Asset Windows
+      id: upload-release-asset-windows
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./server/build/server-win.exe
+        asset_name: server-win.exe
+        asset_content_type: application/octet-stream
