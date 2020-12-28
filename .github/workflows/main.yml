@@ -17,7 +17,10 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
-    - run: npm install && npm run build && zip -r build/client-app.zip build 
+    - run: zip server/build/server-linux.zip server/server-linux
+    - run: zip server/build/server-macos.zip server/server-macos
+    - run: zip server/build/server-win.zip server/server-win.exe
+    - run: npm install && npm run build && zip -r build/client-app.zip build
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -35,9 +38,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./server/build/server-linux
-        asset_name: server-linux
-        asset_content_type: application/x-executable
+        asset_path: ./server/build/server-linux.zip
+        asset_name: server-linux.zip
+        asset_content_type: application/zip
     - name: Upload Release Asset MACOS
       id: upload-release-asset-macos
       uses: actions/upload-release-asset@v1
@@ -45,9 +48,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./server/build/server-macos
-        asset_name: server-macos
-        asset_content_type: application/x-executable
+        asset_path: ./server/build/server-macos.zip
+        asset_name: server-macos.zip
+        asset_content_type: application/zip
     - name: Upload Release Asset Windows
       id: upload-release-asset-windows
       uses: actions/upload-release-asset@v1
@@ -55,9 +58,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./server/build/server-win.exe
-        asset_name: server-win.exe
-        asset_content_type: application/octet-stream
+        asset_path: ./server/build/server-win.zip
+        asset_name: server-win.zip
+        asset_content_type: application/zip
     - name: Upload Release Asset Client App
       id: upload-release-asset-client-app
       uses: actions/upload-release-asset@v1
