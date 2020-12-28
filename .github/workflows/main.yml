@@ -17,12 +17,22 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        repo_token: ${{ secrets.TOKEN }}
-        file: server/build/
-        asset_name: app
-        tag: ${{ github.ref }}
-        overwrite: true
-        body: "This is my release text"
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: true
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./server/server-linux
+        asset_name: server-linux
