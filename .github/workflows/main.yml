@@ -17,6 +17,7 @@ jobs:
         node-version: '12'
     - run: cd ./server && npm install
     - run: cd ./server && ./node_modules/.bin/pkg ./server.js --node --out-path ./build
+    - run: npm run build && zip --junk-paths client-app.zip ./build/
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -26,7 +27,7 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
         draft: false
-        prerelease: true
+        prerelease: false
     - name: Upload Release Asset Linux
       id: upload-release-asset-linux
       uses: actions/upload-release-asset@v1
@@ -57,3 +58,13 @@ jobs:
         asset_path: ./server/build/server-win.exe
         asset_name: server-win.exe
         asset_content_type: application/octet-stream
+    - name: Upload Release Asset Client App
+      id: upload-release-asset-client-app
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./client-app.zip
+        asset_name: client-app.zip
+        asset_content_type: application/zip
