@@ -27,3 +27,4 @@ yarn-error.log*
 
 /.eslintcache
 server/.eslintcache
+.eslintcache
