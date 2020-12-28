@@ -1,5 +1,5 @@
 // const baseurl = "http://0dda447e320e.eu.ngrok.io/api/";
-const baseurl = "http://172.16.20.102:5000/";
+const baseurl = "http://localhost/api/";
 
 const appfetch = (path, options) =>
   fetch(baseurl + path, options).then((data) => data.json());
