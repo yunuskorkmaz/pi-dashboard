@@ -13,9 +13,11 @@
   "devDependencies": {
     "eslint": "^7.16.0",
     "nodemon": "^2.0.6",
-    "pkg": "^4.4.9"
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.0"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "webpack"
   }
 }
