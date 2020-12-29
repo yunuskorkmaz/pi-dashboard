@@ -37,3 +37,13 @@ jobs:
         asset_path: ./server/build/server-api.zip
         asset_name: server-api.zip
         asset_content_type: application/zip
+    - name: Upload Release Asset Client App
+      id: upload-release-asset-client-app
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/client-app.zip
+        asset_name: client-app.zip
+        asset_content_type: application/zip
