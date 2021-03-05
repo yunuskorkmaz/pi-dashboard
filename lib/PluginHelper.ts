@@ -20,7 +20,9 @@ export class PluginHelper implements IPluginHelper {
 
     files.forEach(async (item) => {
       try {
+        console.log(item)
         var Plugin = await import(this.pluginFolder+ '/' + item)
+        console.log(Plugin);
         pluginList.push(new Plugin.default);
       } catch (error) {
         console.log(error);

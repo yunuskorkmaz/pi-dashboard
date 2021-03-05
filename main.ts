@@ -14,11 +14,13 @@ const createApplication = async () => {
     var list = await app.get<IPluginHelper>('plugin_helper').getPluginList();
     app.set('plugins',list);
     app.set('events',new EventEmitter())
-    console.log(app)
 }
 
 const createAbly = () => {
     var ably = new Ably.Realtime({ key: process.env.ABLY});
+    ably.connection.on('closing',(state) => {
+        ably.connect()
+    })
     app.set('ably',ably);
 }
 createAbly();
